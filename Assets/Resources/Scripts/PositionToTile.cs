@@ -13,12 +13,12 @@ public class PositionToTile : MonoBehaviour {
 		Vector3 localPosition = collider.transform.InverseTransformPoint(position); //Put the position in the colliders space
 		Vector3 size = collider.GetComponent<BoxCollider>().size;
 		
-		if (localPosition.x > size.x/2) {normal = new Vector3(0,0,270); Debug.Log ("local > x");}
-		else if (localPosition.x < -size.x/2) {normal = new Vector3(0,0,90); Debug.Log ("local < -x");}
-		else if (localPosition.y > size.y/2) {normal = new Vector3(0,0,0); Debug.Log ("local > y");}
-		else if (localPosition.y < -size.y/2) {normal = new Vector3(0,0,180); Debug.Log ("local < -y");}
-		else if (localPosition.z > size.z/2) {normal = new Vector3(90,0,0); Debug.Log ("local > z");}
-		else if (localPosition.z < -size.z/2) {normal = new Vector3(270,0,0); Debug.Log ("local < -z");}
+		if (localPosition.x > size.x/2) {normal = new Vector3(0,0,270);}
+		else if (localPosition.x < -size.x/2) {normal = new Vector3(0,0,90);}
+		else if (localPosition.y > size.y/2) {normal = new Vector3(0,0,0);}
+		else if (localPosition.y < -size.y/2) {normal = new Vector3(0,0,180);}
+		else if (localPosition.z > size.z/2) {normal = new Vector3(90,0,0);}
+		else if (localPosition.z < -size.z/2) {normal = new Vector3(270,0,0);}
 		
 		return normal;
 	}

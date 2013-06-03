@@ -15,7 +15,7 @@ public class MoveHumanoid : MonoBehaviour {
 	
 	public float jetPackStabilizeTorque = 1f;
 	
-	public float movementSpeed = .25f;
+	public float movementSpeed = 5f;
 	
 	public float mouseSensitivity = 5f; //will be set by player later
 	
@@ -32,7 +32,7 @@ public class MoveHumanoid : MonoBehaviour {
 			JetPackStabilize();
 		}
 	}
-	
+		
 	//Public methods that are called from PlayerInput or other movement logic scripts
 	//move by local axis
 	public void MoveX (float strength) {
@@ -119,11 +119,11 @@ public class MoveHumanoid : MonoBehaviour {
 	//Movement while a child of an object, translates accross flat ground.
 	
 	void MoveXAttached (float strength) {
-		transform.Translate(transform.right * strength);
+		transform.Translate(transform.right * strength * Time.deltaTime * movementSpeed, Space.World);
 	}
 	
 	void MoveZAttached (float strength) {
-		transform.Translate(transform.forward * strength);
+		transform.Translate(transform.forward * strength * Time.deltaTime * movementSpeed, Space.World);
 	}
 	
 	void RotateXAttached (float strength) {
