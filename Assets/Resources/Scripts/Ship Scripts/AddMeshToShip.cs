@@ -1,0 +1,67 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+public class AddMeshToShip {
+	
+	List<Vector3> shipVertices = new List<Vector3>();
+	
+	List<int> shipTris = new List<int>();
+	
+	public void addMesh (MeshAttributes meshAttributes, Mesh shipMesh) {
+				
+		shipVertices = shipMesh.vertices.ToList();
+		
+		shipVertices.AddRange(meshAttributes.vertices);
+		
+		for (int i = 0; i < meshAttributes.triangles.Length; i++) {
+			meshAttributes.triangles[i] = meshAttributes.triangles[i] + shipMesh.vertexCount;
+		}
+		
+		shipTris = shipMesh.triangles.ToList();
+						
+		shipTris.AddRange(meshAttributes.triangles);
+		
+		shipMesh.Clear();
+		
+		shipMesh.vertices = shipVertices.ToArray();
+		
+		shipMesh.triangles = shipTris.ToArray();
+	}
+	
+	public void addMesh (List<MeshAttributes> meshAttributesList, Mesh shipMesh) {
+		
+		shipVertices = new List<Vector3>();
+		
+		shipTris = new List<int>();
+		
+		if (shipMesh.vertices.Count() > 0)
+			shipVertices = shipMesh.vertices.ToList();
+		if (shipMesh.triangles.Count() > 0)
+			shipTris = shipMesh.triangles.ToList();
+		
+		int lastVertices = shipVertices.Count;
+		
+		foreach (MeshAttributes meshAttributes in meshAttributesList) {
+			
+			for (int i = 0; i < meshAttributes.triangles.Length; i++) {
+				meshAttributes.triangles[i] = meshAttributes.triangles[i] + shipVertices.Count;
+			}
+			
+			shipVertices.AddRange(meshAttributes.vertices);
+			
+			lastVertices = meshAttributes.vertices.Count();
+			
+			shipTris.AddRange(meshAttributes.triangles);	
+		}
+		
+		shipMesh.Clear();
+		
+		shipMesh.vertices = shipVertices.ToArray();
+		
+		shipMesh.triangles = shipTris.ToArray();
+		
+		shipMesh.RecalculateNormals();
+	}
+}
