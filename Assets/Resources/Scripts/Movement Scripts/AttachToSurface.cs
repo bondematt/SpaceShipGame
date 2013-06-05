@@ -33,6 +33,9 @@ public class AttachToSurface : MonoBehaviour {
 		} else if (attach && attached) {
 			//check if we are still on a surface
 		}
+		Vector3 localEulerAngles = transform.localEulerAngles;
+		Vector3 eulerAngles = transform.eulerAngles;
+		//Debug.Log ("localEulerAngles: " + localEulerAngles.x + ", " + localEulerAngles.y + ", " + localEulerAngles.z + ", eulerAngles: "  +  + eulerAngles.x + ", " + eulerAngles.y + ", " + eulerAngles.z);
 	}
 	
 	public void DoAttach () {
@@ -56,16 +59,57 @@ public class AttachToSurface : MonoBehaviour {
 	//set angle to upright from surface, set position to point of impact, set parent to root parent of surface hit
 	void Attach (RaycastHit surfaceHit) {
 		Transform rootParent = surfaceHit.collider.transform.root;
-		Vector3 localEulerRotationUp = gameObject.GetComponent<HandlerShips>().ships.positionToTile.PositionToNormal(surfaceHit.point, surfaceHit.collider);
+		Vector3 normalOfSurface = gameObject.GetComponent<HandlerShips>().ships.positionToTile.PositionToNormal(surfaceHit.point, surfaceHit.collider);
+		Vector3 storeEuler = transform.localEulerAngles;
 		transform.parent = rootParent;
-		transform.localEulerAngles = localEulerRotationUp; //Currently rotates the player to a specific facing, make it use the way they are currently facing, but with the correct "up"
+		float playerFacingDirection = CorrectFacing(normalOfSurface);
+		transform.localEulerAngles = normalOfSurface;
+		transform.Rotate(Vector3.up, playerFacingDirection, Space.Self);
+		Debug.Log ("Rotate by: " + playerFacingDirection + ", Original Y: " + storeEuler.y);
 		transform.position = surfaceHit.point + (transform.up * 0.9f); //need to make this use the humanoids feet
+		
+		//apply rotation player had before attaching
 		attached = true;
 		moveHumanoid.Attach();
 		rigidbody.isKinematic = true;
 	}
 	
-	void Detach () {
+	float CorrectFacing (Vector3 eulerRotation) {
+		float facingRotation = 0f;
 		
+		if (eulerRotation == new Vector3(0,0,0)) 
+		{
+			facingRotation = transform.localEulerAngles.y;
+		}
+		else if (eulerRotation == new Vector3(0,0,180))
+		{
+			facingRotation = transform.localEulerAngles.y;
+		}
+		else if (eulerRotation == new Vector3(0,0,90))
+		{
+			facingRotation = 360 - transform.localEulerAngles.x;
+		}
+		else if (eulerRotation == new Vector3(0,0,270))
+		{
+			//Debug.Log("transform.localEulerAngles.x: " + transform.localEulerAngles.x);
+			facingRotation = transform.localEulerAngles.x;
+		}
+		else if (eulerRotation == new Vector3(270,0,0))
+		{
+			//Debug.Log("transform.localEulerAngles.z: " + transform.localEulerAngles.z);
+			facingRotation = 360 - transform.localEulerAngles.z;
+		}
+		else if (eulerRotation == new Vector3(90,0,0))
+		{
+			//Debug.Log("transform.localEulerAngles.z: " + transform.localEulerAngles.z);
+			facingRotation = transform.localEulerAngles.z;
+		}
+		return facingRotation;
+	}
+	
+	void Detach () {
+		attached = false;
+		moveHumanoid.Detach();
+		rigidbody.isKinematic = false;
 	}
 }
