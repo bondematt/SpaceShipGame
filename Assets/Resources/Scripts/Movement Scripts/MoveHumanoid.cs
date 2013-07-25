@@ -101,16 +101,18 @@ public class MoveHumanoid : MonoBehaviour {
 	public void ToggleJetpackStabilize () {
 		if (jetPackStabilize) {
 			jetPackStabilize = false;	
+			Debug.Log("Jet Pack Stabilization Off");
 		} else {
 			jetPackStabilize = true;	
+			Debug.Log("Jet Pack Stabilization On");
 		}
 	}
 	
-	public void Attach() {
+	public void Attached() {
 		AttachedToSurface = true;
 	}
 	
-	public void Detach() {
+	public void Detached() {
 		AttachedToSurface = false;
 	}
 	

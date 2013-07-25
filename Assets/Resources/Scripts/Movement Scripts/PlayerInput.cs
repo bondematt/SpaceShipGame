@@ -4,6 +4,7 @@ using System.Collections;
 public class PlayerInput : MonoBehaviour {
 	
 	MoveHumanoid movePlayer;
+	AttachToSurface attachToSurface;
 	
 	float moveForward = 0f;
 	float moveRight = 0f;
@@ -15,6 +16,8 @@ public class PlayerInput : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		movePlayer = transform.root.GetComponentInChildren<MoveHumanoid>();
+		attachToSurface = transform.root.GetComponentInChildren<AttachToSurface>();
+		Screen.lockCursor = true;
 	}
 	
 	// Update is called once per frame
@@ -46,8 +49,11 @@ public class PlayerInput : MonoBehaviour {
 		if(Input.GetAxis("Mouse Y") != 0) {
 			movePlayer.RotateX(Input.GetAxis("Mouse Y"));
 		}*/
-		if(Input.GetButton("Z")) {
+		if(Input.GetButtonUp("Jetpack Stabilizer Toggle")) {
 			movePlayer.ToggleJetpackStabilize();
+		}
+		if(Input.GetButtonUp("Magnetic Boots Toggle")) {
+			attachToSurface.ToggleAttach();
 		}
 	}
 	
