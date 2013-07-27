@@ -2,11 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CheckForNeighboringTiles {
+public static class CheckForNeighboringTiles {
 	
 	//re-write to remove all tiles on diffent x, y, and z planes at once.
 	
-	public List<Tile> checkForNeighbors(Tile shipTile, Ship ship) {
+	static public List<Tile> checkForNeighbors(Tile shipTile, Ship ship) {
 		List<Tile> shipTiles = new List<Tile>();
 		List<Tile> tilesFound = new List<Tile>();
 		List<Tile> tilesChecking = new List<Tile>();

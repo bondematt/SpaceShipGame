@@ -1,20 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-public class CreateTileMesh {
-	
-	Vector3 p0;
-	Vector3 p1;
-	Vector3 p2;
-	Vector3 p3;
-	Vector3 p4;
-	Vector3 p5;
-	Vector3 p6;
-	Vector3 p7;
-	
-	
-	
-	public MeshAttributes createTileVerticesTriangles (Vector3 tilePosition, Quaternion rotation, Vector3 tileDimensions){
+public static class CreateTileMesh {
+	static public MeshAttributes createTileVerticesTriangles (Vector3 tilePosition, Quaternion rotation, Vector3 tileDimensions){
+		Vector3 p0;
+		Vector3 p1;
+		Vector3 p2;
+		Vector3 p3;
+		Vector3 p4;
+		Vector3 p5;
+		Vector3 p6;
+		Vector3 p7;
+		
 		MeshAttributes meshAttributes = new MeshAttributes();
 		meshAttributes.vertices = new Vector3[24];
 		meshAttributes.triangles = new int[36];

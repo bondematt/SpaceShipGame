@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-//call with player class
-public class CreateShipMesh {
-	public void createShipMesh(Player player, Ship ship) {
+//Creates a ship mesh based on the tiles in the ship and the relevant player and ship positions
+public static class CreateShipMesh {
+	public static void createShipMesh(Player player, Ship ship) {
 
 		Quaternion rotation = Quaternion.Euler(ship.angle.x, ship.angle.y, ship.angle.z);
 		
-		Vector3 positionOffset = ship.ships.sectorToScenePosition.GetScenePosition(ship, player);
+		Vector3 positionOffset = SectorToScenePosition.GetScenePosition(ship, player);
 				
 		List<Tile> shipTiles = new List<Tile>();
 						
@@ -28,32 +28,32 @@ public class CreateShipMesh {
 		
 		foreach (Tile tile in ship.tilesList) {
 			if (tile.type == 0) {
-				MeshAttributes meshAttributes = ship.ships.createTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x, tile.tilePosition.y + player.handlerScene.tileOffset, tile.tilePosition.z), rotation, floorTileDimensions);
+				MeshAttributes meshAttributes = CreateTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x, tile.tilePosition.y + HandlerScene.tileOffset, tile.tilePosition.z), rotation, floorTileDimensions);
 				meshAttributesList.Add (meshAttributes);
 			}
 			
 			else if (tile.type == 1) {		
-				MeshAttributes meshAttributes = ship.ships.createTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x - player.handlerScene.tileOffset, tile.tilePosition.y, tile.tilePosition.z), rotation, wallTileXDimensions);
+				MeshAttributes meshAttributes = CreateTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x - HandlerScene.tileOffset, tile.tilePosition.y, tile.tilePosition.z), rotation, wallTileXDimensions);
 				meshAttributesList.Add (meshAttributes);
 			}
 			
 			else if (tile.type == 2) {
-				MeshAttributes meshAttributes = ship.ships.createTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x + player.handlerScene.tileOffset, tile.tilePosition.y, tile.tilePosition.z), rotation, wallTileXDimensions);
+				MeshAttributes meshAttributes = CreateTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x + HandlerScene.tileOffset, tile.tilePosition.y, tile.tilePosition.z), rotation, wallTileXDimensions);
 				meshAttributesList.Add (meshAttributes);
 			}
 			
 			else if (tile.type == 3) {
-				MeshAttributes meshAttributes = ship.ships.createTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x, tile.tilePosition.y, tile.tilePosition.z - player.handlerScene.tileOffset), rotation, wallTileYDimensions);
+				MeshAttributes meshAttributes = CreateTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x, tile.tilePosition.y, tile.tilePosition.z - HandlerScene.tileOffset), rotation, wallTileYDimensions);
 				meshAttributesList.Add (meshAttributes);
 			}
 			
 			else if (tile.type == 4) {
-				MeshAttributes meshAttributes = ship.ships.createTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x, tile.tilePosition.y, tile.tilePosition.z + player.handlerScene.tileOffset), rotation, wallTileYDimensions);
+				MeshAttributes meshAttributes = CreateTileMesh.createTileVerticesTriangles(new Vector3 (tile.tilePosition.x, tile.tilePosition.y, tile.tilePosition.z + HandlerScene.tileOffset), rotation, wallTileYDimensions);
 				meshAttributesList.Add (meshAttributes);
 			}
 		}
 		
-		ship.ships.addMeshToShip.addMesh(meshAttributesList, shipMesh);
+		AddMeshToShip.addMesh(meshAttributesList, shipMesh);
 		ship.shipObject.transform.Translate((ship.shipObject.transform.position - ship.shipObject.rigidbody.worldCenterOfMass), Space.World);
 	}
 	

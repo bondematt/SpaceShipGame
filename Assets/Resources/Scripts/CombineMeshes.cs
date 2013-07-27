@@ -2,14 +2,14 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CombineMeshes {
-	Vector3 startPosition;
-	CombineInstance[] combine = new CombineInstance[2];
-	MeshFilter addMesh;
-	MeshFilter baseMesh;
+public static class CombineMeshes {
+	static Vector3 startPosition;
+	static CombineInstance[] combine = new CombineInstance[2];
+	static MeshFilter addMesh;
+	static MeshFilter baseMesh;
 	
 	//combines single mesh into the base mesh
-	public void combineMeshes (GameObject addMeshObject, GameObject baseMeshObject) {
+	static public void combineMeshes (GameObject addMeshObject, GameObject baseMeshObject) {
 		startPosition = baseMeshObject.transform.position;
 		baseMeshObject.transform.position = new Vector3(0,0,0);
 		

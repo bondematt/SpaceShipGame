@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class SectorToScenePosition {
-	
-	public Vector3 GetScenePosition(Ship ship, Player player) {
+//Gets the position in the player's scene from the sector position
+public static class SectorToScenePosition {
+	static public Vector3 GetScenePosition(Ship ship, Player player) {
 		//get difference between player sector and ship
 		int sectorOffsetX = ship.sector.x - player.sector.x;
 		int sectorOffsetY = ship.sector.y - player.sector.y;
@@ -15,14 +15,14 @@ public class SectorToScenePosition {
 		float positionOffsetZ = ship.sectorPosition.z - player.sectorPosition.z;
 		
 		//get final distance between them by allowing for crossing of sector limit
-		positionOffsetX = positionOffsetX + sectorOffsetX * player.handlerScene.sectorSize;
-		positionOffsetY = positionOffsetY + sectorOffsetY * player.handlerScene.sectorSize;
-		positionOffsetZ = positionOffsetZ + sectorOffsetZ * player.handlerScene.sectorSize;
+		positionOffsetX = positionOffsetX + sectorOffsetX * HandlerScene.sectorSize;
+		positionOffsetY = positionOffsetY + sectorOffsetY * HandlerScene.sectorSize;
+		positionOffsetZ = positionOffsetZ + sectorOffsetZ * HandlerScene.sectorSize;
 		
 		return new Vector3(positionOffsetX, positionOffsetY, positionOffsetZ);
 	}
 		
-	public Vector3 GetScenePosition(Sector sector, SectorPosition position, Player player) {
+	static public Vector3 GetScenePosition(Sector sector, SectorPosition position, Player player) {
 		//get difference between player sector and ship
 		int sectorOffsetX = sector.x - player.sector.x;
 		int sectorOffsetY = sector.y - player.sector.y;
@@ -34,9 +34,9 @@ public class SectorToScenePosition {
 		float positionOffsetZ = position.z - player.sectorPosition.z;
 		
 		//get final distance between them by allowing for crossing of sector limit
-		positionOffsetX = positionOffsetX + sectorOffsetX * player.handlerScene.sectorSize;
-		positionOffsetY = positionOffsetY + sectorOffsetY * player.handlerScene.sectorSize;
-		positionOffsetZ = positionOffsetZ + sectorOffsetZ * player.handlerScene.sectorSize;
+		positionOffsetX = positionOffsetX + sectorOffsetX * HandlerScene.sectorSize;
+		positionOffsetY = positionOffsetY + sectorOffsetY * HandlerScene.sectorSize;
+		positionOffsetZ = positionOffsetZ + sectorOffsetZ * HandlerScene.sectorSize;
 		
 		return new Vector3(positionOffsetX, positionOffsetY, positionOffsetZ);
 	}

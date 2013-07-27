@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class AddMeshToShip {
+public static class AddMeshToShip {
 	
-	List<Vector3> shipVertices = new List<Vector3>();
+	static List<Vector3> shipVertices = new List<Vector3>();
 	
-	List<int> shipTris = new List<int>();
+	static List<int> shipTris = new List<int>();
 	
-	public void addMesh (MeshAttributes meshAttributes, Mesh shipMesh) {
+	static public void addMesh (MeshAttributes meshAttributes, Mesh shipMesh) {
 				
 		shipVertices = shipMesh.vertices.ToList();
 		
@@ -30,7 +30,7 @@ public class AddMeshToShip {
 		shipMesh.triangles = shipTris.ToArray();
 	}
 	
-	public void addMesh (List<MeshAttributes> meshAttributesList, Mesh shipMesh) {
+	static public void addMesh (List<MeshAttributes> meshAttributesList, Mesh shipMesh) {
 		
 		shipVertices = new List<Vector3>();
 		

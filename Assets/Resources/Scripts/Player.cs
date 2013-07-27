@@ -10,7 +10,6 @@ public class Player {
 	public ObjectVelocity velocity = new ObjectVelocity();
 	public Vector3 angularVelocity = new Vector3();
 	public HandlerShips handlerShip;
-	public HandlerScene handlerScene;
 	
 	public Player(GameObject playerObject) {
 		this.playerObject = playerObject;
@@ -24,6 +23,5 @@ public class Player {
 	
 	public void updateScriptRef() {
 		handlerShip = playerObject.GetComponent<HandlerShips>();
-		handlerScene = playerObject.GetComponent<HandlerScene>();
 	}	
 }

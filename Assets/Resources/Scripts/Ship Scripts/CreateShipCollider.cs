@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CreateShipCollider {	
+public static class CreateShipCollider {	
 	
 	//run this on a ship when every tile needs to be checked and loaded
-	public void createColliders(Ship ship) {
+	static public void createColliders(Ship ship) {
 		List<Tile> doneTiles = new List<Tile>();
 		List<Tile> returnTiles = new List<Tile>();
 		float maxX = 0;
@@ -25,7 +25,7 @@ public class CreateShipCollider {
 			
 			if (!doneTiles.Contains(tile)) {
 				
-				returnTiles = ship.ships.checkForNeighboringTiles.checkForNeighbors(tile, ship);
+				returnTiles = CheckForNeighboringTiles.checkForNeighbors(tile, ship);
 								
 				//initialize collider size
 				maxX = returnTiles[0].tilePosition.x;

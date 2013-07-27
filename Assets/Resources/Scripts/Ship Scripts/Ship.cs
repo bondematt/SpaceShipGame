@@ -27,19 +27,21 @@ public class Ship {
 		List<Tile> tiles = new List<Tile>();
 	}
 	
-	public Ship(string name, Ships ships, Sector sector, SectorPosition sectorPosition, Tile tile) {
+	public Ship(string name, Ships ships, Sector sector, SectorPosition sectorPosition, Vector3 angle, Tile tile) {
 		this.name = name;
 		this.ships = ships;
 		this.sector = sector;
 		this.sectorPosition = sectorPosition;
+		this.angle = angle;
 		this.tilesList.Add(tile);
 	}
 	
-	public Ship(string name, Ships ships, Sector sector, SectorPosition sectorPosition, List<Tile> tileList) {
+	public Ship(string name, Ships ships, Sector sector, SectorPosition sectorPosition, Vector3 angle, List<Tile> tileList) {
 		this.name = name;
 		this.ships = ships;
 		this.sector = sector;
 		this.sectorPosition = sectorPosition;
+		this.angle = angle;
 		foreach (Tile tile in tileList) {
 			this.tilesList.Add(tile);
 			tile.ship = this;

@@ -6,6 +6,8 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 
+
+//Currently used to generate a ship for the player to interact with
 public class HandlerShips : MonoBehaviour {
 	
 	public GameObject playerObject;
@@ -73,7 +75,7 @@ public class HandlerShips : MonoBehaviour {
 				}
 		}
 
-		Ship ship = ships.newShip("Spartacus", new Sector(0,0,0), new SectorPosition(0,0,10), tiles);
+		Ship ship = ships.newShip("Spartacus", new Sector(0,0,0), new SectorPosition(0,0,10), new Vector3(10,15,22), tiles);
 		player = new Player(playerObject);
 				
 		float startMesh = 0;
@@ -81,19 +83,19 @@ public class HandlerShips : MonoBehaviour {
 		float endColliders = 0;
 		float endCoM = 0;
 		
-		ship.ships.createShipObject.createShip(ship, player);
+		CreateShipObject.createShip(ship, player);
 		
 		startMesh = Time.realtimeSinceStartup;
 				
-		ships.createShipMesh.createShipMesh(player, ship);
+		CreateShipMesh.createShipMesh(player, ship);
 		
 		endMesh = Time.realtimeSinceStartup;
 		
-		ships.createShipCollider.createColliders(ship);
+		CreateShipCollider.createColliders(ship);
 		
 		endColliders = Time.realtimeSinceStartup;
 		
-		ships.centerOfShipMass.centerOfMass(player, ship);
+		CenterOfShipMass.centerOfMass(player, ship);
 		
 		ship.shipObject.rigidbody.sleepVelocity = 0;
 		ship.shipObject.rigidbody.sleepAngularVelocity = 0;
