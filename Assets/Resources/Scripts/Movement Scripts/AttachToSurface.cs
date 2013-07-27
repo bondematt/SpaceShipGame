@@ -34,9 +34,11 @@ public class AttachToSurface : MonoBehaviour {
 	
 	Collider attachedTo;
 	
-	float lerpT = .01f;
-	
 	Velocity velocity;
+	
+	public float moveSpeed = 1f;
+	
+	public float rotateSpeed = 1f;
 	
 	// Use this for initialization
 	void Start () {
@@ -64,7 +66,11 @@ public class AttachToSurface : MonoBehaviour {
 			Detach();
 		} else if (attach && attached) {
 			//check if we are still on the same surface
-			surfaceHitInfo = CheckForSurface();
+			if (attaching) {
+				surfaceHitInfo = CheckForSurface(hitCollider.transform.TransformDirection(-normalOfSurfaceVector), 2f);
+			} else {
+				surfaceHitInfo = CheckForSurface();
+			}
 			if (hitSurface) {
 				//check if we are on same surface
 				
@@ -90,6 +96,16 @@ public class AttachToSurface : MonoBehaviour {
 		{
 			attach = true;
 			Debug.Log ("Magnetic Boots On");
+		}
+	}
+	
+	RaycastHit CheckForSurface (Vector3 angle, float length) {
+		hitSurface = false;
+		if (Physics.Raycast(transform.position, angle, out hitInfo, length)) {
+			hitSurface = true;
+			return hitInfo;
+		} else {
+			return hitInfo;	//returns a blank struct, essentially a null value.
 		}
 	}
 	
@@ -132,10 +148,9 @@ public class AttachToSurface : MonoBehaviour {
 	{
 		if (rootParent != null) 
 		{
-			lerpT += (Time.deltaTime * 1f);
 			playerFinalPosition = hitPosition + (normalOfSurfaceVector * .9f); //Get position where we want the player to be
-			
-			transform.position = Vector3.Lerp(transform.position, playerFinalPosition, lerpT); //Gradually move player towards this point
+
+			transform.position = Vector3.MoveTowards(transform.position, playerFinalPosition, moveSpeed * Time.deltaTime);
 			
 			//set reference object at position of player with the rotation of the normal
 			normalPoint.SetActive(true);
@@ -159,18 +174,13 @@ public class AttachToSurface : MonoBehaviour {
 			
 			Quaternion finalRotation = normalPoint.transform.localRotation;
 			
-			transform.localRotation =  Quaternion.RotateTowards(transform.localRotation ,finalRotation, .5f);
+			transform.localRotation =  Quaternion.RotateTowards(transform.localRotation ,finalRotation, rotateSpeed);
 			
 			normalPoint.transform.parent = null;
 
-			Debug.Log ("offsetLocal.y: " + offsetLocal.y + ", Distace to final position: " + (playerFinalPosition - transform.position).magnitude);
 			if (Quaternion.Angle(transform.localRotation, finalRotation) < .1f && (playerFinalPosition - transform.position).magnitude <= 0.001f) {
 				attaching = false; //stop attaching as we are now attached
 				normalPoint.SetActive(false); //deactivate reference point as it is no longer needed
-				lerpT = .01f;
-				normalOfSurfaceEuler = new Vector3();
-				normalOfSurfaceVector = new Vector3();	
-				Debug.Log("Has been attached");
 			}
 		} else 
 		{
@@ -178,17 +188,16 @@ public class AttachToSurface : MonoBehaviour {
 			normalOfSurfaceEuler = new Vector3();
 			normalOfSurfaceVector = new Vector3();
 			attachedTo = (Collider) hitCollider;
-			lerpT = .01f;
 		}
 	}
 	
 	void Detach () {
-		Debug.Log("Expected Velocity: " + velocity);
 		attached = false;
+		attaching = false;
 		moveHumanoid.Detached();
 		transform.parent = null;
+		rootParent = null;
 		rigidbody.isKinematic = false;
 		rigidbody.velocity = velocity.velocity;
-		Debug.Log("Actual Velocity: " + rigidbody.velocity);
 	}
 }
