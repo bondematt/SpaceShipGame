@@ -21,13 +21,15 @@ public class MoveHumanoid : MonoBehaviour {
 	
 	public float mouseSensitivity = 5f; //will be set by player later
 	
-	public float mouseSensitivityX = 10f;
+	public float mouseSensitivityX = 25f;
 	
 	public float mouseSensitivityY = 10f;
 	
 	public float rotationSensitivity = .25f; //Used to keep rotation axis in line with mouse axis
 	
 	public Transform camera;
+	
+	float rotationX = 0f;
 
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -142,8 +144,11 @@ public class MoveHumanoid : MonoBehaviour {
 		transform.Translate(transform.forward * strength * Time.deltaTime * movementSpeed, Space.World);
 	}
 	
-	void RotateXAttached (float strength) {
-		camera.RotateAround(camera.right, -strength * Time.deltaTime * mouseSensitivityX);
+	void RotateXAttached (float strength) {		
+		rotationX += (strength * Time.deltaTime * mouseSensitivityX);
+  		rotationX = Mathf.Clamp (rotationX, -60, 60);
+ 
+    	camera.localEulerAngles = new Vector3(-rotationX, camera.localEulerAngles.y, camera.localEulerAngles.z);
 	}
 	
 	void RotateYAttached (float strength) {
