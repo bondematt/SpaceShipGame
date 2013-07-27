@@ -116,7 +116,6 @@ public class AttachToSurface : MonoBehaviour {
 		{
 			normalOfSurfaceVector = Normals.Normal(surfaceHit);
 			Debug.Log("normalOfSurfaceVector: " + normalOfSurfaceVector);
-			//normalOfSurfaceVector = PositionToTile.PositionToNormalVector(surfaceHit.point, surfaceHit.collider);
 			hitCollider = (MeshCollider) surfaceHit.collider;
 			hitPosition = surfaceHit.point;
 		}

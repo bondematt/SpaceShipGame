@@ -7,7 +7,7 @@ public static class Sweeptests {
 		if (_rigidbody.SweepTest(direction, out hitInfo,distance)) {
 			return hitInfo;
 		} else {
-			return hitInfo;	//returns a blank struct, essentially a null value.
+			return hitInfo;
 		}
 	}
 }
