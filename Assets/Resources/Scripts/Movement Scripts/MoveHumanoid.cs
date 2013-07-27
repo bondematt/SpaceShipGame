@@ -21,7 +21,13 @@ public class MoveHumanoid : MonoBehaviour {
 	
 	public float mouseSensitivity = 5f; //will be set by player later
 	
+	public float mouseSensitivityX = 10f;
+	
+	public float mouseSensitivityY = 10f;
+	
 	public float rotationSensitivity = .25f; //Used to keep rotation axis in line with mouse axis
+	
+	public Transform camera;
 
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -62,10 +68,12 @@ public class MoveHumanoid : MonoBehaviour {
 			if (attachedToSurface) {
 				direction.y = 0;
 				float strength = direction.magnitude;
+				strength = Mathf.Clamp(strength, -1f, 1f);
 				MoveXAttached (direction.normalized.x * strength);
 				MoveZAttached (direction.normalized.z * strength);
 			} else {
 				float strength = direction.magnitude;
+				strength = Mathf.Clamp(strength, -1f, 1f);
 				MoveXJetpack (direction.normalized.x * strength);
 				MoveYJetpack (direction.normalized.y * strength);
 				MoveZJetpack (direction.normalized.z * strength);
@@ -97,7 +105,7 @@ public class MoveHumanoid : MonoBehaviour {
 	public void RotateZ (float strength) {
 		if (!attaching) {
 			if (attachedToSurface) {
-				RotateZAttached (strength);
+				//RotateZAttached (strength);
 			} else {
 				RotateZJetpack (strength);
 			}
@@ -127,23 +135,19 @@ public class MoveHumanoid : MonoBehaviour {
 	//Movement while a child of an object, translates accross flat ground.
 	
 	void MoveXAttached (float strength) {
-			transform.Translate(transform.right * strength * Time.deltaTime * movementSpeed, Space.World);
+		transform.Translate(transform.right * strength * Time.deltaTime * movementSpeed, Space.World);
 	}
 	
 	void MoveZAttached (float strength) {
-			transform.Translate(transform.forward * strength * Time.deltaTime * movementSpeed, Space.World);
+		transform.Translate(transform.forward * strength * Time.deltaTime * movementSpeed, Space.World);
 	}
 	
 	void RotateXAttached (float strength) {
-		
+		camera.RotateAround(camera.right, -strength * Time.deltaTime * mouseSensitivityX);
 	}
 	
 	void RotateYAttached (float strength) {
-		
-	}
-	
-	void RotateZAttached (float strength) {
-		
+		transform.RotateAround(transform.up, strength * Time.deltaTime * mouseSensitivityY);
 	}
 	
 	//movement while humanoid is a rigidbody with a jetpack attached, without one there is no movement possible.

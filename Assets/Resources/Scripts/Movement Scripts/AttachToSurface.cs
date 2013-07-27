@@ -3,9 +3,15 @@ using System.Collections;
 
 public class AttachToSurface : MonoBehaviour {
 	
+	public bool attach = false;
+	
+	public float moveSpeed = 1f;
+	
+	public float rotateSpeed = 1f;
+	
 	bool attached = false;
 	bool hitSurface = false;
-	public bool attach = false;
+	
 	bool attaching = false;
 	
 	Transform rootParent = null; //initialize rootParent
@@ -20,6 +26,8 @@ public class AttachToSurface : MonoBehaviour {
 	
 	Collider hitCollider;
 	
+	Collider attachedTo;
+	
 	Vector3 hitPosition = new Vector3();
 	
 	Vector3 normalOfSurfaceEuler = new Vector3(); //initialize normalOfSurface
@@ -32,13 +40,7 @@ public class AttachToSurface : MonoBehaviour {
 	
 	GameObject normalPoint;
 	
-	Collider attachedTo;
-	
 	Velocity velocity;
-	
-	public float moveSpeed = 1f;
-	
-	public float rotateSpeed = 1f;
 	
 	// Use this for initialization
 	void Start () {
@@ -50,6 +52,16 @@ public class AttachToSurface : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
+		//Check if the humanoid should be attached
+		checkForAttach();
+		
+		//If still attaching to an object continue doing so
+		if (attaching) {
+			RotateToNormalLookAt();
+		}
+	}
+	
+	public void checkForAttach () {
 		//Check if the humanoid should be attached
 		if (attach && !attached) {
 			//We are searching for a surface
@@ -76,11 +88,6 @@ public class AttachToSurface : MonoBehaviour {
 				//No longer on a surface
 				Detach();
 			}
-		}
-		
-		//If still attaching to an object continue doing so
-		if (attaching) {
-			RotateToNormalLookAt();
 		}
 	}
 	
@@ -123,6 +130,13 @@ public class AttachToSurface : MonoBehaviour {
 	
 	void RotateToNormalLookAt () 
 	{
+		attaching = RotateAndPositions.RotateAndPositionFacingForward(transform, normalPoint, hitPosition, normalOfSurfaceVector, moveSpeed, rotateSpeed);
+		if (!attaching) {
+			moveHumanoid.Attaching(false);
+			attachedTo = (Collider) hitCollider;
+		}
+		
+		/*
 		if (rootParent != null) 
 		{
 			playerFinalPosition = hitPosition + (normalOfSurfaceVector * .91f); //Get position where we want the player to be
@@ -167,7 +181,7 @@ public class AttachToSurface : MonoBehaviour {
 			normalOfSurfaceVector = new Vector3();
 			attachedTo = (Collider) hitCollider;
 			Detach();
-		}
+		}*/
 	}
 	
 	void Detach () {
