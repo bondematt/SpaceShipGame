@@ -126,7 +126,7 @@ public class AttachToSurface : MonoBehaviour {
 	{
 		if (rootParent != null) 
 		{
-			playerFinalPosition = hitPosition + (normalOfSurfaceVector * .9f); //Get position where we want the player to be
+			playerFinalPosition = hitPosition + (normalOfSurfaceVector * .91f); //Get position where we want the player to be
 
 			transform.position = Vector3.MoveTowards(transform.position, playerFinalPosition, moveSpeed * Time.deltaTime);
 			
