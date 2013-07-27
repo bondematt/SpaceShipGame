@@ -126,6 +126,12 @@ public class MoveHumanoid : MonoBehaviour {
 	
 	public void Attached(bool state) {
 		attachedToSurface = state;
+		
+		//reset camera position when detaching
+		if (attachedToSurface == false) {
+			rotationX = 0f;
+			camera.localEulerAngles = new Vector3(-rotationX, camera.localEulerAngles.y, camera.localEulerAngles.z);
+		}
 	}
 	
 	public void Attaching(bool state) {
