@@ -5,13 +5,9 @@ using System.Linq;
 
 public static class AddMeshToShip {
 	
-	static List<Vector3> shipVertices = new List<Vector3>();
-	
-	static List<int> shipTris = new List<int>();
-	
 	static public void addMesh (MeshAttributes meshAttributes, Mesh shipMesh) {
 				
-		shipVertices = shipMesh.vertices.ToList();
+		List<Vector3> shipVertices = shipMesh.vertices.ToList();
 		
 		shipVertices.AddRange(meshAttributes.vertices);
 		
@@ -19,7 +15,7 @@ public static class AddMeshToShip {
 			meshAttributes.triangles[i] = meshAttributes.triangles[i] + shipMesh.vertexCount;
 		}
 		
-		shipTris = shipMesh.triangles.ToList();
+		List<int> shipTris = shipMesh.triangles.ToList();
 						
 		shipTris.AddRange(meshAttributes.triangles);
 		
@@ -32,9 +28,9 @@ public static class AddMeshToShip {
 	
 	static public void addMesh (List<MeshAttributes> meshAttributesList, Mesh shipMesh) {
 		
-		shipVertices = new List<Vector3>();
+		List<Vector3> shipVertices = new List<Vector3>();
 		
-		shipTris = new List<int>();
+		List<int> shipTris = new List<int>();
 		
 		if (shipMesh.vertices.Count() > 0)
 			shipVertices = shipMesh.vertices.ToList();

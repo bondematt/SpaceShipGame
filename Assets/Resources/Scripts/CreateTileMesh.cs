@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public static class CreateTileMesh {
-	static public MeshAttributes createTileVerticesTriangles (Vector3 tilePosition, Quaternion rotation, Vector3 tileDimensions){
+	static public MeshAttributes createTileVerticesTriangles (Vector3 tilePosition, Vector3 tileDimensions){
 		Vector3 p0;
 		Vector3 p1;
 		Vector3 p2;
@@ -17,16 +17,16 @@ public static class CreateTileMesh {
 		meshAttributes.triangles = new int[36];
 		
 		//top vertices
-		p0 = (rotation * new Vector3(tileDimensions.x,tileDimensions.y,tileDimensions.z) + tilePosition); //front right
-		p1 = (rotation * new Vector3(tileDimensions.x,tileDimensions.y,-tileDimensions.z) + tilePosition); // back right
-		p2 = (rotation * new Vector3(-tileDimensions.x,tileDimensions.y,tileDimensions.z) + tilePosition); //front left
-		p3 = (rotation * new Vector3(-tileDimensions.x,tileDimensions.y,-tileDimensions.z) + tilePosition); //back left
+		p0 = (new Vector3(tileDimensions.x,tileDimensions.y,tileDimensions.z) + tilePosition); //front right
+		p1 = (new Vector3(tileDimensions.x,tileDimensions.y,-tileDimensions.z) + tilePosition); // back right
+		p2 = (new Vector3(-tileDimensions.x,tileDimensions.y,tileDimensions.z) + tilePosition); //front left
+		p3 = (new Vector3(-tileDimensions.x,tileDimensions.y,-tileDimensions.z) + tilePosition); //back left
 		
 		//bottom vertices
-		p4 = (rotation * new Vector3(tileDimensions.x,-tileDimensions.y,tileDimensions.z) + tilePosition); //front right
-		p5 = (rotation * new Vector3(tileDimensions.x,-tileDimensions.y,-tileDimensions.z) + tilePosition); // back right
-		p6 = (rotation * new Vector3(-tileDimensions.x,-tileDimensions.y,tileDimensions.z) + tilePosition); //front left
-		p7 = (rotation * new Vector3(-tileDimensions.x,-tileDimensions.y,-tileDimensions.z) + tilePosition); //back left
+		p4 = (new Vector3(tileDimensions.x,-tileDimensions.y,tileDimensions.z) + tilePosition); //front right
+		p5 = (new Vector3(tileDimensions.x,-tileDimensions.y,-tileDimensions.z) + tilePosition); // back right
+		p6 = (new Vector3(-tileDimensions.x,-tileDimensions.y,tileDimensions.z) + tilePosition); //front left
+		p7 = (new Vector3(-tileDimensions.x,-tileDimensions.y,-tileDimensions.z) + tilePosition); //back left
 		
 		//top face
 		meshAttributes.vertices[0] = p2;
