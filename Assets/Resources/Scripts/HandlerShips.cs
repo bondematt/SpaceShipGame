@@ -76,7 +76,7 @@ public class HandlerShips : MonoBehaviour {
 				}
 		}*/
 
-		Ship ship = ships.newShip("Spartacus", new Sector(0,0,0), new SectorPosition(0,0,10), new Vector3(15,230,171), tiles);
+		Ship ship = ships.newShip("Spartacus", new Sector(0,0,0), new SectorPosition(0,0,10), new Vector3(0,0,0), tiles);
 		player = new Player(playerObject);
 				
 		float startMesh = 0;

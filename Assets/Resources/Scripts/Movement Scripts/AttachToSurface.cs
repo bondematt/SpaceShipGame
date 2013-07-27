@@ -53,7 +53,7 @@ public class AttachToSurface : MonoBehaviour {
 		//Check if the humanoid should be attached
 		if (attach && !attached) {
 			//We are searching for a surface
-			surfaceHitInfo = Raycasts.Raycast(transform.position, -transform.up, 1f);
+			surfaceHitInfo = Sweeptests.Sweeptest(rigidbody, -transform.up, .1f);
 			
 			if (surfaceHitInfo.collider != null) {
 				//we found a surface and need to attachhitSurface = false;
@@ -65,9 +65,9 @@ public class AttachToSurface : MonoBehaviour {
 		} else if (attach && attached) {
 			//check if we are still on the same surface
 			if (attaching) {
-				surfaceHitInfo = Raycasts.Raycast(transform.position, hitCollider.transform.TransformDirection(-normalOfSurfaceVector), 2f);
+				surfaceHitInfo = Sweeptests.Sweeptest(rigidbody, -transform.up, .2f);
 			} else {
-				surfaceHitInfo = Raycasts.Raycast(transform.position, -transform.up, 1f);
+				surfaceHitInfo = Sweeptests.Sweeptest(rigidbody, -transform.up, .1f);
 			}
 			if (surfaceHitInfo.collider != null) {
 				//check if we are on same surface
@@ -97,26 +97,6 @@ public class AttachToSurface : MonoBehaviour {
 		}
 	}
 	
-	RaycastHit CheckForSurface (Vector3 angle, float length) {
-		hitSurface = false;
-		if (Physics.Raycast(transform.position, angle, out hitInfo, length)) {
-			hitSurface = true;
-			return hitInfo;
-		} else {
-			return hitInfo;	//returns a blank struct, essentially a null value.
-		}
-	}
-	
-	RaycastHit CheckForSurface () {
-		hitSurface = false;
-		if (Physics.Raycast(transform.position, -transform.up, out hitInfo, 1f)) {
-			hitSurface = true;
-			return hitInfo;
-		} else {
-			return hitInfo;	//returns a blank struct, essentially a null value.
-		}
-	}
-		
 	void Attach (RaycastHit surfaceHit) {
 		rootParent = surfaceHit.collider.transform.root; //get highest level transform of the tile we hit
 		moveHumanoid.Attached(true);
@@ -124,6 +104,7 @@ public class AttachToSurface : MonoBehaviour {
 		attached = true;
 		attaching = true;
 		rigidbody.isKinematic = true;
+		rigidbody.detectCollisions = false;
 		transform.parent = rootParent; //Set parent to the rootParent, so the humanoid now moves with the ship.
 		if (surfaceHit.collider.GetType() == typeof(BoxCollider)) 
 		{
@@ -133,7 +114,7 @@ public class AttachToSurface : MonoBehaviour {
 		}
 		if (surfaceHit.collider.GetType() == typeof(MeshCollider)) 
 		{
-			normalOfSurfaceVector = surfaceHit.normal;
+			normalOfSurfaceVector = Normals.Normal(surfaceHit);
 			Debug.Log("normalOfSurfaceVector: " + normalOfSurfaceVector);
 			//normalOfSurfaceVector = PositionToTile.PositionToNormalVector(surfaceHit.point, surfaceHit.collider);
 			hitCollider = (MeshCollider) surfaceHit.collider;
@@ -186,6 +167,7 @@ public class AttachToSurface : MonoBehaviour {
 			moveHumanoid.Attaching(false);
 			normalOfSurfaceVector = new Vector3();
 			attachedTo = (Collider) hitCollider;
+			Detach();
 		}
 	}
 	
@@ -193,9 +175,11 @@ public class AttachToSurface : MonoBehaviour {
 		attached = false;
 		attaching = false;
 		moveHumanoid.Attached(false);
+		moveHumanoid.Attaching(false);
 		transform.parent = null;
 		rootParent = null;
 		rigidbody.isKinematic = false;
+		rigidbody.detectCollisions = true;
 		rigidbody.velocity = velocity.velocity;
 	}
 }
