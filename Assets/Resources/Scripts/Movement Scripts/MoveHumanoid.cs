@@ -3,7 +3,9 @@ using System.Collections;
 
 public class MoveHumanoid : MonoBehaviour {
 	
-	bool AttachedToSurface = false; //Will be set when player attaches/detaches from ships
+	bool attachedToSurface = false; //Will be set when player attaches/detaches from ships
+	
+	bool attaching = false;
 	
 	public bool jetPackStabilize = true; //player toggle
 	
@@ -21,22 +23,19 @@ public class MoveHumanoid : MonoBehaviour {
 	
 	public float rotationSensitivity = .25f; //Used to keep rotation axis in line with mouse axis
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (jetPackStabilize) {
-			JetPackStabilize();
+		if (!attaching && !attachedToSurface) {
+			if (jetPackStabilize) {
+				JetPackStabilize();
+			}
 		}
 	}
 		
 	//Public methods that are called from PlayerInput or other movement logic scripts
 	//move by local axis
 	public void MoveX (float strength) {
-		if (AttachedToSurface) {
+		if (attachedToSurface) {
 			MoveXAttached (strength);
 		} else {
 			MoveXJetpack (strength);
@@ -44,13 +43,13 @@ public class MoveHumanoid : MonoBehaviour {
 	}
 	
 	public void MoveY (float strength) {
-		if (!AttachedToSurface) {
+		if (!attachedToSurface) {
 			MoveYJetpack (strength);
 		}
 	}
 	
 	public void MoveZ (float strength) {
-		if (AttachedToSurface) {
+		if (attachedToSurface) {
 			MoveZAttached (strength);
 		} else {
 			MoveZJetpack (strength);
@@ -59,42 +58,49 @@ public class MoveHumanoid : MonoBehaviour {
 	
 	//move in direction
 	public void MoveDirection (Vector3 direction) {
-		
-		if (AttachedToSurface) {
-			direction.y = 0;
-			float strength = direction.magnitude;
-			MoveXAttached (direction.normalized.x * strength);
-			MoveZAttached (direction.normalized.z * strength);
-		} else {
-			float strength = direction.magnitude;
-			MoveXJetpack (direction.normalized.x * strength);
-			MoveYJetpack (direction.normalized.y * strength);
-			MoveZJetpack (direction.normalized.z * strength);
+		if (!attaching) {
+			if (attachedToSurface) {
+				direction.y = 0;
+				float strength = direction.magnitude;
+				MoveXAttached (direction.normalized.x * strength);
+				MoveZAttached (direction.normalized.z * strength);
+			} else {
+				float strength = direction.magnitude;
+				MoveXJetpack (direction.normalized.x * strength);
+				MoveYJetpack (direction.normalized.y * strength);
+				MoveZJetpack (direction.normalized.z * strength);
+			}
 		}
 	}
 	
 	
 	public void RotateX (float strength) {
-		if (AttachedToSurface) {
-			RotateXAttached (strength);
-		} else {
-			RotateXJetpack (strength);
+		if (!attaching) {
+			if (attachedToSurface) {
+				RotateXAttached (strength);
+			} else {
+				RotateXJetpack (strength);
+			}
 		}
 	}
 	
 	public void RotateY (float strength) {
-		if (AttachedToSurface) {
-			RotateYAttached (strength);
-		} else {
-			RotateYJetpack (strength);
+		if (!attaching) {
+			if (attachedToSurface) {
+				RotateYAttached (strength);
+			} else {
+				RotateYJetpack (strength);
+			}
 		}
 	}
 	
 	public void RotateZ (float strength) {
-		if (AttachedToSurface) {
-			RotateZAttached (strength);
-		} else {
-			RotateZJetpack (strength);
+		if (!attaching) {
+			if (attachedToSurface) {
+				RotateZAttached (strength);
+			} else {
+				RotateZJetpack (strength);
+			}
 		}
 	}
 	
@@ -108,24 +114,24 @@ public class MoveHumanoid : MonoBehaviour {
 		}
 	}
 	
-	public void Attached() {
-		AttachedToSurface = true;
+	public void Attached(bool state) {
+		attachedToSurface = state;
 	}
 	
-	public void Detached() {
-		AttachedToSurface = false;
-	}
+	public void Attaching(bool state) {
+		attaching = state;
+	}	
 	
 	//Private Methods that handle the actual movement
 	
 	//Movement while a child of an object, translates accross flat ground.
 	
 	void MoveXAttached (float strength) {
-		transform.Translate(transform.right * strength * Time.deltaTime * movementSpeed, Space.World);
+			transform.Translate(transform.right * strength * Time.deltaTime * movementSpeed, Space.World);
 	}
 	
 	void MoveZAttached (float strength) {
-		transform.Translate(transform.forward * strength * Time.deltaTime * movementSpeed, Space.World);
+			transform.Translate(transform.forward * strength * Time.deltaTime * movementSpeed, Space.World);
 	}
 	
 	void RotateXAttached (float strength) {

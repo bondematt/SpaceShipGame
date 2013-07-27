@@ -49,9 +49,7 @@ public class AttachToSurface : MonoBehaviour {
 		normalPoint.SetActive(false);
 	}
 	
-	// Update is called once per frame
 	void FixedUpdate () {
-		
 		//Check if the humanoid should be attached
 		if (attach && !attached) {
 			//We are searching for a surface
@@ -121,7 +119,8 @@ public class AttachToSurface : MonoBehaviour {
 		
 	void Attach (RaycastHit surfaceHit) {
 		rootParent = surfaceHit.collider.transform.root; //get highest level transform of the tile we hit
-		moveHumanoid.Attached();
+		moveHumanoid.Attached(true);
+		moveHumanoid.Attaching(true);
 		attached = true;
 		attaching = true;
 		rigidbody.isKinematic = true;
@@ -180,11 +179,13 @@ public class AttachToSurface : MonoBehaviour {
 
 			if (Quaternion.Angle(transform.localRotation, finalRotation) < .1f && (playerFinalPosition - transform.position).magnitude <= 0.001f) {
 				attaching = false; //stop attaching as we are now attached
+				moveHumanoid.Attaching(false);
 				normalPoint.SetActive(false); //deactivate reference point as it is no longer needed
 			}
 		} else 
 		{
 			attaching = false;
+			moveHumanoid.Attaching(false);
 			normalOfSurfaceEuler = new Vector3();
 			normalOfSurfaceVector = new Vector3();
 			attachedTo = (Collider) hitCollider;
@@ -194,7 +195,7 @@ public class AttachToSurface : MonoBehaviour {
 	void Detach () {
 		attached = false;
 		attaching = false;
-		moveHumanoid.Detached();
+		moveHumanoid.Attached(false);
 		transform.parent = null;
 		rootParent = null;
 		rigidbody.isKinematic = false;
