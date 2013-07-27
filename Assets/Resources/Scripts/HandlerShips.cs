@@ -22,7 +22,7 @@ public class HandlerShips : MonoBehaviour {
 		List<Tile> tiles = new List<Tile>();
 		int[] tilesList = new int[] {0, 1, 3 };
 		
-		/*for (int i = 1; i < 10; i++) {
+		for (int i = 1; i < 10; i++) {
 			for (int j = 1; j < 10; j ++) {
 				for (int k = 1; k < 10; k++) {
 					foreach (int tileType in tilesList) {
@@ -31,8 +31,9 @@ public class HandlerShips : MonoBehaviour {
 					}
 				}
 			}
-		}*/
+		}
 		
+		/*
 		for (int i = 1; i < 6; i++) {
 				for (int k = 1; k < 10; k++) {
 					Tile tile = new Tile( i,  1,  k, 0,  50);
@@ -73,7 +74,7 @@ public class HandlerShips : MonoBehaviour {
 					Tile tile = new Tile( 5,  k,  i, 1,  50);
 					tiles.Add (tile);
 				}
-		}
+		}*/
 
 		Ship ship = ships.newShip("Spartacus", new Sector(0,0,0), new SectorPosition(0,0,10), new Vector3(15,230,171), tiles);
 		player = new Player(playerObject);
@@ -91,7 +92,15 @@ public class HandlerShips : MonoBehaviour {
 		
 		endMesh = Time.realtimeSinceStartup;
 		
-		CreateShipCollider.createColliders(ship);
+		//CreateShipCollider.createColliders(ship);
+		
+		//Add mesh collider
+		//set mesh collider to same as ship mesh
+		//see how it runs. Put out fires when done
+		
+		MeshCollider shipCollider = ship.shipObject.AddComponent<MeshCollider>();
+		shipCollider.sharedMesh = ship.shipObject.GetComponent<MeshFilter>().mesh;
+		
 		
 		endColliders = Time.realtimeSinceStartup;
 		

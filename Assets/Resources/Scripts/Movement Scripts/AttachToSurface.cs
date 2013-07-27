@@ -18,7 +18,7 @@ public class AttachToSurface : MonoBehaviour {
 	
 	RaycastHit surfaceHitInfo;
 	
-	BoxCollider hitCollider;
+	Collider hitCollider;
 	
 	Vector3 hitPosition = new Vector3();
 	
@@ -53,10 +53,10 @@ public class AttachToSurface : MonoBehaviour {
 		//Check if the humanoid should be attached
 		if (attach && !attached) {
 			//We are searching for a surface
-			surfaceHitInfo = CheckForSurface();
-			if (hitSurface) {
-				//we found a surface and need to attach
-				hitSurface = false;
+			surfaceHitInfo = Raycasts.Raycast(transform.position, -transform.up, 1f);
+			
+			if (surfaceHitInfo.collider != null) {
+				//we found a surface and need to attachhitSurface = false;
 				Attach(surfaceHitInfo);
 			}
 		} else if (!attach && attached) {
@@ -65,11 +65,11 @@ public class AttachToSurface : MonoBehaviour {
 		} else if (attach && attached) {
 			//check if we are still on the same surface
 			if (attaching) {
-				surfaceHitInfo = CheckForSurface(hitCollider.transform.TransformDirection(-normalOfSurfaceVector), 2f);
+				surfaceHitInfo = Raycasts.Raycast(transform.position, hitCollider.transform.TransformDirection(-normalOfSurfaceVector), 2f);
 			} else {
-				surfaceHitInfo = CheckForSurface();
+				surfaceHitInfo = Raycasts.Raycast(transform.position, -transform.up, 1f);
 			}
-			if (hitSurface) {
+			if (surfaceHitInfo.collider != null) {
 				//check if we are on same surface
 				
 			} else {
@@ -127,22 +127,20 @@ public class AttachToSurface : MonoBehaviour {
 		transform.parent = rootParent; //Set parent to the rootParent, so the humanoid now moves with the ship.
 		if (surfaceHit.collider.GetType() == typeof(BoxCollider)) 
 		{
-			normalOfSurfaceEuler = PositionToTile.PositionToNormalEuler(surfaceHit.point, surfaceHit.collider);
 			normalOfSurfaceVector = PositionToTile.PositionToNormalVector(surfaceHit.point, surfaceHit.collider);
 			hitCollider = (BoxCollider) surfaceHit.collider;
 			hitPosition = surfaceHit.point;
 		}
+		if (surfaceHit.collider.GetType() == typeof(MeshCollider)) 
+		{
+			normalOfSurfaceVector = surfaceHit.normal;
+			Debug.Log("normalOfSurfaceVector: " + normalOfSurfaceVector);
+			//normalOfSurfaceVector = PositionToTile.PositionToNormalVector(surfaceHit.point, surfaceHit.collider);
+			hitCollider = (MeshCollider) surfaceHit.collider;
+			hitPosition = surfaceHit.point;
+		}
 	}
 	
-	/* Move player towards his final position determined by hit point and normal of surface
-	 * 
-	 * Get point in world space 1 meter in front of humanoid
-	 * Move that point up to the players 'height' above the collider.
-	 * 	- use collider.transform.InverseTransformPoint(pointDirection) 
-	 *  - Modify that new vector3.y to set the height to the same as the players
-	 *  - Then put that back into world space
-	 * rotate player to look at that new point with normal as up vector
-	 */
 	void RotateToNormalLookAt () 
 	{
 		if (rootParent != null) 
@@ -156,7 +154,7 @@ public class AttachToSurface : MonoBehaviour {
 			
 			normalPoint.transform.parent = rootParent;
 			normalPoint.transform.position = transform.position;
-			normalPoint.transform.localRotation = Quaternion.Euler (normalOfSurfaceEuler);
+			normalPoint.transform.up = normalOfSurfaceVector;
 			normalPoint.transform.parent = null;
 			
 			Vector3 pointDirection = transform.forward + transform.position; //world position of point 1 meter in front of player
@@ -186,7 +184,6 @@ public class AttachToSurface : MonoBehaviour {
 		{
 			attaching = false;
 			moveHumanoid.Attaching(false);
-			normalOfSurfaceEuler = new Vector3();
 			normalOfSurfaceVector = new Vector3();
 			attachedTo = (Collider) hitCollider;
 		}
