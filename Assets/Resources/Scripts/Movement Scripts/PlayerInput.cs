@@ -55,6 +55,12 @@ public class PlayerInput : MonoBehaviour {
 		if(Input.GetButtonUp("Magnetic Boots Toggle")) {
 			attachToSurface.ToggleAttach();
 		}
+		if(Input.GetButtonUp("Magnetic Boots Toggle")) {
+			attachToSurface.ToggleAttach();
+		}
+		if(Input.GetKeyUp(KeyCode.Escape)) {
+			StartGameMenu.OpenMenu(0);
+		}
 	}
 	
 	void ApplyFixedInput() {

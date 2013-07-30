@@ -19,18 +19,19 @@ public class MoveHumanoid : MonoBehaviour {
 	
 	public float movementSpeed = 5f;
 	
-	public float mouseSensitivity = 5f; //will be set by player later
+	public float mouseSensitivityX = 5f;
 	
-	public float mouseSensitivityX = 25f;
-	
-	public float mouseSensitivityY = 10f;
+	public float mouseSensitivityY = 2f;
 	
 	public float rotationSensitivity = .25f; //Used to keep rotation axis in line with mouse axis
 	
 	public Transform camera;
 	
 	float rotationX = 0f;
-
+	
+	void Start () {
+	}
+	
 	// Update is called once per frame
 	void FixedUpdate () {
 		if (!attaching && !attachedToSurface) {
@@ -151,14 +152,14 @@ public class MoveHumanoid : MonoBehaviour {
 	}
 	
 	void RotateXAttached (float strength) {		
-		rotationX += (strength * Time.deltaTime * mouseSensitivityX);
+		rotationX += (strength * Time.deltaTime * mouseSensitivityX * StartGameMenu.mouseSensitivity);
   		rotationX = Mathf.Clamp (rotationX, -60, 60);
  
     	camera.localEulerAngles = new Vector3(-rotationX, camera.localEulerAngles.y, camera.localEulerAngles.z);
 	}
 	
 	void RotateYAttached (float strength) {
-		transform.RotateAround(transform.up, strength * Time.deltaTime * mouseSensitivityY);
+		transform.RotateAround(transform.up, strength * Time.deltaTime * mouseSensitivityY * StartGameMenu.mouseSensitivity);
 	}
 	
 	//movement while humanoid is a rigidbody with a jetpack attached, without one there is no movement possible.
@@ -176,11 +177,11 @@ public class MoveHumanoid : MonoBehaviour {
 	}
 	
 	void RotateXJetpack (float strength) {
-		rigidbody.AddTorque(-transform.right * strength * Time.deltaTime * jetPackTorque * mouseSensitivity);
+		rigidbody.AddTorque(-transform.right * strength * Time.deltaTime * jetPackTorque * StartGameMenu.mouseSensitivity);
 	}
 	
 	void RotateYJetpack (float strength) {
-		rigidbody.AddTorque(transform.up * strength * Time.deltaTime * jetPackTorque * mouseSensitivity);
+		rigidbody.AddTorque(transform.up * strength * Time.deltaTime * jetPackTorque * StartGameMenu.mouseSensitivity);
 	}
 	
 	void RotateZJetpack (float strength) {
