@@ -22,6 +22,10 @@ public class StartGameMenu : MonoBehaviour {
 	}
 	
 	void OnGUI () {
+		//Temporary label to show player's controls
+		
+		GUI.Label(new Rect (10 , 10, 300, 100), "Default Controls: WASD for movement \nShift and Control for up and down \nQE and Mouse to rotate \nZ toggles jetpack position holding \nX toggles magnetic boots.");
+		
 		switch (menuLevel)
 		{
 		case -1: {

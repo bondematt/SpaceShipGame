@@ -40,26 +40,20 @@ public class PlayerInput : MonoBehaviour {
 		xRotate = Input.GetAxis("Mouse Y");
 		
 		//}
-		/*if(Input.GetAxis("Rotation") != 0) {
-			movePlayer.RotateZ(Input.GetAxis("Rotation"));
-		}
-		if(Input.GetAxis("Mouse X") != 0) {
-			movePlayer.RotateY(Input.GetAxis("Mouse X"));
-		}
-		if(Input.GetAxis("Mouse Y") != 0) {
-			movePlayer.RotateX(Input.GetAxis("Mouse Y"));
-		}*/
 		if(Input.GetButtonUp("Jetpack Stabilizer Toggle")) {
 			movePlayer.ToggleJetpackStabilize();
 		}
 		if(Input.GetButtonUp("Magnetic Boots Toggle")) {
 			attachToSurface.ToggleAttach();
 		}
-		if(Input.GetButtonUp("Magnetic Boots Toggle")) {
-			attachToSurface.ToggleAttach();
-		}
+		
+		//Toggle opening/closing of menu with escape
 		if(Input.GetKeyUp(KeyCode.Escape)) {
-			StartGameMenu.OpenMenu(0);
+			if (StartGameMenu.menuLevel == -1) {
+				StartGameMenu.OpenMenu(0);
+			} else {
+				StartGameMenu.OpenMenu(-1);
+			}
 		}
 	}
 	
