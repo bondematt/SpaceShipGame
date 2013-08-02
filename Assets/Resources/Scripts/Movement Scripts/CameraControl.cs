@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraControl : MonoBehaviour {
 	
-	public Transform camera;
+	public Transform playerCamera;
 	
 	public Vector3 cameraPositionFirstPerson = new Vector3(0,0.6f,0);
 	public Vector3 cameraRotationFirstPerson = new Vector3(0,0,0);
@@ -13,13 +13,13 @@ public class CameraControl : MonoBehaviour {
 	int cameraMode = 1;
 	
 	void FirstPersonCamera () {
-		camera.localPosition = cameraPositionFirstPerson;
-		camera.localRotation = Quaternion.Euler(cameraRotationFirstPerson);
+		playerCamera.localPosition = cameraPositionFirstPerson;
+		playerCamera.localRotation = Quaternion.Euler(cameraRotationFirstPerson);
 	}
 		
 	void ThirdPersonCamera () {
-		camera.localPosition = cameraPositionThirdPerson;
-		camera.localRotation = Quaternion.Euler(cameraRotationThirdPerson);
+		playerCamera.localPosition = cameraPositionThirdPerson;
+		playerCamera.localRotation = Quaternion.Euler(cameraRotationThirdPerson);
 	}
 	
 	public void ToggleCameraMode () {
@@ -34,6 +34,6 @@ public class CameraControl : MonoBehaviour {
 	
 	public void RotateCamera (float angle) {
 		if (cameraMode == 0)
-			camera.localRotation = Quaternion.Euler(angle, camera.localRotation.y, camera.localRotation.z);
+			playerCamera.localRotation = Quaternion.Euler(angle, playerCamera.localRotation.y, playerCamera.localRotation.z);
 	}
 }

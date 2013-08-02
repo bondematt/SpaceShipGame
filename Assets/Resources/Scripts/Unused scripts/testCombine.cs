@@ -34,7 +34,7 @@ public class testCombine : MonoBehaviour {
         transform.GetComponent<MeshFilter>().mesh = new Mesh();
         transform.GetComponent<MeshFilter>().mesh.CombineMeshes(combine,true);
 		transform.GetComponent<MeshCollider>().sharedMesh = transform.GetComponent<MeshFilter>().mesh;
-		transform.gameObject.active = true;
+		transform.gameObject.SetActive(true);
 		
 		transform.position = startPosition;
 	}
