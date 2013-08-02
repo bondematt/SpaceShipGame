@@ -5,7 +5,7 @@ public class StartGameMenu : MonoBehaviour {
 	
 	public static int menuLevel = 0;
 	
-	public static float mouseSensitivity = 5f;
+	public static float mouseSensitivity = 1f;
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +24,7 @@ public class StartGameMenu : MonoBehaviour {
 	void OnGUI () {
 		//Temporary label to show player's controls
 		
-		GUI.Label(new Rect (10 , 10, 300, 100), "Default Controls: WASD for movement \nShift and Control for up and down \nQE and Mouse to rotate \nZ toggles jetpack position holding \nX toggles magnetic boots.");
+		GUI.Label(new Rect (10 , 10, 300, 100), "Default Controls: WASD for movement \nShift and Control for up and down \nQE and Mouse to rotate \nZ toggles jetpack position holding \nX toggles magnetic boots \nESC for menu");
 		
 		switch (menuLevel)
 		{

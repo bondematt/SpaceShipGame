@@ -9,14 +9,12 @@ public class AttachToSurface : MonoBehaviour {
 	
 	public float rotateSpeed = 1f;
 	
-	bool attached = false;
+	public bool attached = false;
 	bool hitSurface = false;
 	
-	bool attaching = false;
+	public bool attaching = false;
 	
 	Transform rootParent = null; //initialize rootParent
-	
-	MoveHumanoid moveHumanoid;
 	
 	Transform surfaceToAttach;
 	
@@ -44,7 +42,6 @@ public class AttachToSurface : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		moveHumanoid = transform.root.GetComponentInChildren<MoveHumanoid>();
 		velocity = transform.root.GetComponentInChildren<Velocity>();
 		normalPoint = new GameObject();
 		normalPoint.name = "Reference Point";
@@ -106,8 +103,6 @@ public class AttachToSurface : MonoBehaviour {
 	
 	void Attach (RaycastHit surfaceHit) {
 		rootParent = surfaceHit.collider.transform.root; //get highest level transform of the tile we hit
-		moveHumanoid.Attached(true);
-		moveHumanoid.Attaching(true);
 		attached = true;
 		attaching = true;
 		rigidbody.isKinematic = true;
@@ -132,63 +127,13 @@ public class AttachToSurface : MonoBehaviour {
 	{
 		attaching = RotateAndPositions.RotateAndPositionFacingForward(transform, normalPoint, hitPosition, normalOfSurfaceVector, moveSpeed, rotateSpeed);
 		if (!attaching) {
-			moveHumanoid.Attaching(false);
 			attachedTo = (Collider) hitCollider;
 		}
-		
-		/*
-		if (rootParent != null) 
-		{
-			playerFinalPosition = hitPosition + (normalOfSurfaceVector * .91f); //Get position where we want the player to be
-
-			transform.position = Vector3.MoveTowards(transform.position, playerFinalPosition, moveSpeed * Time.deltaTime);
-			
-			//set reference object at position of player with the rotation of the normal
-			normalPoint.SetActive(true);
-			
-			normalPoint.transform.parent = rootParent;
-			normalPoint.transform.position = transform.position;
-			normalPoint.transform.up = normalOfSurfaceVector;
-			normalPoint.transform.parent = null;
-			
-			Vector3 pointDirection = transform.forward + transform.position; //world position of point 1 meter in front of player
-			
-			Vector3 offsetLocal = normalPoint.transform.InverseTransformPoint(pointDirection); //get point in reference point's local space
-			
-			offsetLocal.y = 0f; //set height in local space to same as player's
-			
-			pointDirection = normalPoint.transform.TransformPoint(offsetLocal); //put back into world space
-			
-			normalPoint.transform.LookAt(pointDirection, normalPoint.transform.up); //have reference point look at pointDirection with the correct up normal
-			
-			normalPoint.transform.parent = rootParent;
-			
-			Quaternion finalRotation = normalPoint.transform.localRotation;
-			
-			transform.localRotation =  Quaternion.RotateTowards(transform.localRotation ,finalRotation, rotateSpeed);
-			
-			normalPoint.transform.parent = null;
-
-			if (Quaternion.Angle(transform.localRotation, finalRotation) < .1f && (playerFinalPosition - transform.position).magnitude <= 0.001f) {
-				attaching = false; //stop attaching as we are now attached
-				moveHumanoid.Attaching(false);
-				normalPoint.SetActive(false); //deactivate reference point as it is no longer needed
-			}
-		} else 
-		{
-			attaching = false;
-			moveHumanoid.Attaching(false);
-			normalOfSurfaceVector = new Vector3();
-			attachedTo = (Collider) hitCollider;
-			Detach();
-		}*/
 	}
 	
 	void Detach () {
 		attached = false;
 		attaching = false;
-		moveHumanoid.Attached(false);
-		moveHumanoid.Attaching(false);
 		transform.parent = null;
 		rootParent = null;
 		rigidbody.isKinematic = false;

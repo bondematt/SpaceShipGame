@@ -3,9 +3,30 @@ using System.Collections;
 
 public class PlayerInput : MonoBehaviour {
 	
-	MoveHumanoid movePlayer;
-	AttachToSurface attachToSurface;
+	public AttachToSurface attachToSurface;
+	public CameraControl cameraControl;
+	public MoveOnSurface moveOnSurface;
+	public MoveJetPack moveJetPack;
+	public RotateOnSurface rotateOnSurface;
+	public RotateJetPack rotateJetPack;
+	public JetPackStabilize jetPackStabilize;
 	
+	public float movementSpeed = 5f;
+	
+	public float jetPackForce = 5f;
+	
+	public float jetPackTorqueX = 1f;
+	
+	public float jetPackTorqueY = 1f;
+	
+	public float jetPackTorqueZ = 1f;
+	
+	public float xRotationSpeed = 5f;
+	
+	public float xRotationSpeedAttached = 30f;
+	
+	public float yRotationSpeed = 2f;
+
 	float moveForward = 0f;
 	float moveRight = 0f;
 	float moveUp = 0f;
@@ -13,10 +34,10 @@ public class PlayerInput : MonoBehaviour {
 	float yRotate = 0f;
 	float xRotate = 0f;
 	
+	float rotationX = 0f;
+	
 	// Use this for initialization
 	void Start () {
-		movePlayer = transform.root.GetComponentInChildren<MoveHumanoid>();
-		attachToSurface = transform.root.GetComponentInChildren<AttachToSurface>();
 		Screen.lockCursor = true;
 	}
 	
@@ -39,12 +60,18 @@ public class PlayerInput : MonoBehaviour {
 		yRotate = Input.GetAxis("Mouse X");
 		xRotate = Input.GetAxis("Mouse Y");
 		
+		rotationX += (-xRotate * Time.deltaTime * xRotationSpeedAttached * StartGameMenu.mouseSensitivity);
+  		rotationX = Mathf.Clamp (rotationX, -60, 60);
+		
 		//}
 		if(Input.GetButtonUp("Jetpack Stabilizer Toggle")) {
-			movePlayer.ToggleJetpackStabilize();
+			jetPackStabilize.ToggleJetpackStabilize();
 		}
 		if(Input.GetButtonUp("Magnetic Boots Toggle")) {
 			attachToSurface.ToggleAttach();
+		}
+		if(Input.GetButtonUp("Camera Toggle")) {
+			cameraControl.ToggleCameraMode();
 		}
 		
 		//Toggle opening/closing of menu with escape
@@ -58,9 +85,30 @@ public class PlayerInput : MonoBehaviour {
 	}
 	
 	void ApplyFixedInput() {
-		movePlayer.MoveDirection(new Vector3(moveRight, moveUp, moveForward));
-		movePlayer.RotateZ(zRotate);
-		movePlayer.RotateY(yRotate);
-		movePlayer.RotateX(xRotate);
+		if (!attachToSurface.attaching) {
+			if (attachToSurface.attached) {
+				if (moveOnSurface != null)
+					moveOnSurface.MoveDirection(new Vector3(moveRight, 0, moveForward), movementSpeed);
+				
+				if (rotateOnSurface != null)
+					rotateOnSurface.Rotate(yRotate * yRotationSpeed);
+				
+				if (cameraControl != null)
+					cameraControl.RotateCamera(rotationX);
+				
+			} else if (!attachToSurface.attached) {
+				if (moveJetPack != null)
+					moveJetPack.MoveDirection(new Vector3(moveRight, moveUp, moveForward) * StartGameMenu.mouseSensitivity, jetPackForce);
+				
+				if (rotateJetPack != null)
+					rotateJetPack.Rotate(new Vector3(xRotate, yRotate, zRotate) * StartGameMenu.mouseSensitivity, jetPackTorqueX, jetPackTorqueY, jetPackTorqueZ);
+				
+				if (moveJetPack != null && rotateJetPack != null && jetPackStabilize) {
+					
+				}
+			}
+		}
 	}
+	
+
 }
