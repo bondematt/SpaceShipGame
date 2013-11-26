@@ -117,7 +117,6 @@ public class AttachToSurface : MonoBehaviour {
 		if (surfaceHit.collider.GetType() == typeof(MeshCollider)) 
 		{
 			normalOfSurfaceVector = Normals.Normal(surfaceHit);
-			Debug.Log("normalOfSurfaceVector: " + normalOfSurfaceVector);
 			hitCollider = (MeshCollider) surfaceHit.collider;
 			hitPosition = surfaceHit.point;
 		}

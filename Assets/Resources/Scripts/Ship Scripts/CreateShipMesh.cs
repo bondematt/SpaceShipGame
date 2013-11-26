@@ -4,7 +4,22 @@ using System.Collections.Generic;
 
 //Creates a ship mesh based on the tiles in the ship and the relevant player and ship positions
 public static class CreateShipMesh {
+
 	public static void createShipMesh(Player player, Ship ship) {
+		float tileWidth = .5501f;
+		float tileThickness = .0501f;
+
+		doCreateShipMesh(player, ship, tileWidth, tileThickness);
+	}
+
+
+	//for testing purposes
+	public static void createShipMesh(Player player, Ship ship, float tileWidth, float tileThickness) {
+
+		doCreateShipMesh(player, ship, tileWidth, tileThickness);
+	}
+
+	public static void doCreateShipMesh(Player player, Ship ship, float tileWidth, float tileThickness) {
 				
 		List<Tile> shipTiles = new List<Tile>();
 		
@@ -13,10 +28,10 @@ public static class CreateShipMesh {
 		MeshAttributes[] AllMeshAttributes;
 		
 		List<MeshAttributes> meshAttributesList = new List<MeshAttributes>();
-		
-		Vector3 floorTileDimensions = new Vector3 (.55f,.05f,.55f);
-		Vector3 wallTileXDimensions = new Vector3 (.05f,.55f,.55f);
-		Vector3 wallTileYDimensions = new Vector3 (.55f,.55f,.05f);
+
+		Vector3 floorTileDimensions = new Vector3 (tileWidth,tileThickness,tileWidth);
+		Vector3 wallTileXDimensions = new Vector3 (tileThickness,tileWidth,tileWidth);
+		Vector3 wallTileYDimensions = new Vector3 (tileWidth,tileWidth,tileThickness);
 		
 		foreach (Tile tile in ship.tilesList) {
 			if (tile.type == 0) {
