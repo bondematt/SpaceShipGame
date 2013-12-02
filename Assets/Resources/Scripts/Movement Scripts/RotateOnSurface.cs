@@ -3,11 +3,26 @@ using System.Collections;
 
 public class RotateOnSurface : MonoBehaviour {
 	
-	public void Rotate (float yRotate) {
-		rotateY (yRotate);
+	public PlayerInput playerInput;
+	
+	public AttachToSurface attachToSurface;
+
+	void Start() {
+		if (!playerInput) {
+			playerInput = gameObject.GetComponent<PlayerInput>();
+		}
+		
+		if (!attachToSurface) {
+			attachToSurface = gameObject.GetComponent<AttachToSurface>();
+		}
 	}
 	
-	void rotateY (float angle) {
-		transform.RotateAround(transform.up, angle * Time.deltaTime);
+	void Update(){
+		if (attachToSurface.attached)
+			RotateY(playerInput.yRotate);
+	}
+
+	void RotateY (float angle) {
+		transform.RotateAround(transform.position, transform.up, angle * StartGameMenu.mouseSensitivity);
 	}
 }

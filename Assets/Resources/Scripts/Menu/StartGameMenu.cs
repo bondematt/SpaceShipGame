@@ -52,7 +52,7 @@ public class StartGameMenu : MonoBehaviour {
 	        break;
 		case 1:
 			Time.timeScale = .00001f;
-			mouseSensitivity = GUI.HorizontalSlider (new Rect (Screen.width/2 - Screen.width/8 , Screen.height/2 - Screen.height/10, Screen.width/8, Screen.height/10), mouseSensitivity, 0.01f, 10.0f);
+			mouseSensitivity = GUI.HorizontalSlider (new Rect (Screen.width/2 - Screen.width/8 , Screen.height/2 - Screen.height/10, Screen.width/8, Screen.height/10), mouseSensitivity, 0.01f, 2.00f);
 			GUI.Label(new Rect (Screen.width/2 - Screen.width/8 , Screen.height/2 - Screen.height/10 + 10, Screen.width/8, Screen.height/10), "Mouse Sensitivity: " + mouseSensitivity.ToString("f2"));
 			if (GUI.Button(new Rect(Screen.width/2 - Screen.width/8, Screen.height/2 + (Screen.height/20 * 2) + 20, Screen.width/8, Screen.height/10), "Main Menu")) {
 				menuLevel = 0;

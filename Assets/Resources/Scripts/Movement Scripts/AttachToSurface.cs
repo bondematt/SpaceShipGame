@@ -10,6 +10,7 @@ public class AttachToSurface : MonoBehaviour {
 	public float rotateSpeed = 1f;
 	
 	public bool attached = false;
+
 	bool hitSurface = false;
 	
 	public bool attaching = false;
