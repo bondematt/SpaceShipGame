@@ -34,6 +34,10 @@ public class PlayerInput : MonoBehaviour {
 		if (!attachToSurface) {
 			attachToSurface = gameObject.GetComponent<AttachToSurface>();
 		}
+
+		if (!jetPackStabilize) {
+			jetPackStabilize = gameObject.GetComponent<JetPackStabilize>();
+		}
 	}
 	
 	// Update is called once per frame

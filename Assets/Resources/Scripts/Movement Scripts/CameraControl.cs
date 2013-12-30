@@ -19,6 +19,10 @@ public class CameraControl : MonoBehaviour {
 	public Vector3 cameraRotationThirdPerson = new Vector3(15,0,0);
 	Vector3 cameraOffset;
 
+	public float maxHeadAngle = 90;
+
+	public float zRotateModifier = .7f;
+
 	Vector3 cameraPosition;
 	Quaternion cameraRotation;
 	
@@ -50,30 +54,38 @@ public class CameraControl : MonoBehaviour {
 			cameraOffset = cameraPositionThirdPerson;
 		}
 
-
+		cameraReference.position = playerTransform.position;
 		if (attachToSurface.attached) {
 			playerCamera.parent = playerTransform;
 
 			playerCamera.rotation = playerTransform.rotation;
 
-			playerCamera.position = cameraReference.TransformPoint(cameraOffset);
+			if (cameraMode == 0) {
+				playerCamera.position = playerTransform.TransformPoint(cameraOffset);
+			} else {
+				playerCamera.position = cameraReference.TransformPoint(cameraOffset);
+			}
 
 			if (cameraMode == 0){
 				rotationX += (-playerInput.xRotate * StartGameMenu.mouseSensitivity);
-				rotationX = Mathf.Clamp (rotationX, -60, 60);
+				rotationX = Mathf.Clamp (rotationX, -maxHeadAngle, maxHeadAngle);
 
 				RotateCameraXFirstPerson(rotationX);
 			}
 
 		} else if (!attachToSurface.attached) {
 			playerCamera.parent = null;
-			playerCamera.position = cameraReference.TransformPoint(cameraOffset);
+
+			if (cameraMode == 0) {
+				playerCamera.position = playerTransform.TransformPoint(cameraOffset);
+			} else {
+				playerCamera.position = cameraReference.TransformPoint(cameraOffset);
+			}
 
 			RotateCameraXThirdPerson(playerInput.xRotate);
 			RotateCameraYThirdPerson(playerInput.yRotate);
 			RotateCameraZThirdPerson(playerInput.zRotate);
 		}
-		cameraReference.position = playerTransform.position;
 	}
 	
 	void FirstPersonCamera () {
@@ -108,7 +120,7 @@ public class CameraControl : MonoBehaviour {
 	}
 
 	void RotateCameraZThirdPerson (float angle) {
-		playerCamera.RotateAround(cameraReference.position, -cameraReference.forward, angle);
+		playerCamera.RotateAround(cameraReference.position, -cameraReference.forward, angle * zRotateModifier);
 	}
 
 	void CameraFollow () {
